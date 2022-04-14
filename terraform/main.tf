@@ -1,6 +1,7 @@
 module "resource_group" {
   source         = "./modules/resource_group"
   resource_group = var.resource_group
+  # location       = var.location
 }
 
 module "network" {
@@ -36,17 +37,18 @@ module "publicip" {
   application_type = var.application_type
   resource_type    = "publicip"
   resource_group   = var.resource_group //module.resource_group.resource_group_name
-  mysubnetid = module.network.subnet_id_test
+  mysubnetid       = module.network.subnet_id_test
 }
 
 module "security" {
   source = "./modules/security"
+
 }
 
-module "vm"{
-  source = "./modules/vm"
-  rg = var.resource_group
-  location = var.location
+module "vm" {
+  source               = "./modules/vm"
+  rg                   = var.resource_group
+  location             = var.location
   network_interface_id = module.publicip.NICid
-  ssh_key = module.security.ssh
+  ssh_key              = module.security.ssh
 }

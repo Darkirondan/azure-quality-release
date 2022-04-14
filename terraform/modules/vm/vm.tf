@@ -11,7 +11,7 @@ resource "random_id" "randomId" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "diag${random_id.randomId.hex}"
-  location                 = "swedencentral"
+  location                 = var.location
   resource_group_name      = var.rg
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -20,10 +20,10 @@ resource "azurerm_storage_account" "mystorageaccount" {
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
   name                  = "myVM"
-  location              = "swedencentral"
+  location              = var.location
   resource_group_name   = var.rg
   network_interface_ids = [var.network_interface_id] // azurerm_network_interface.myterraformnic.id]
-  size                  = "Standard_D2s_v3"
+  size                  = "Standard_DS1_v2"
 
   os_disk {
     name                 = "myOsDisk"
